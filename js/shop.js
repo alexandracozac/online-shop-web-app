@@ -4,7 +4,7 @@ window.Shop = {
     getProducts: function () {
         $.ajax({
             url: Shop.API_BASE_URL + "/products"
-            //method: "GET" //default ajax method
+            // default ajax method: "GET"
         }).done(function (response) {
             console.log(response);
 
@@ -12,15 +12,12 @@ window.Shop = {
         });
     },
 
-    addProductToCart: function(productId) {
-
-        let request= {
+    addProductToCart: function (productId) {
+        var request = {
             // todo: take customer id dynamically somehow
             customerId: 28,
-            //first productId from the other app, second from above
             productId: productId
-
-        }
+        };
 
         $.ajax({
             url: Shop.API_BASE_URL + "/carts",
@@ -30,8 +27,6 @@ window.Shop = {
         }).done(function () {
             window.location.replace("cart.html");
         })
-
-
     },
 
     getProductHtml: function (product) {
@@ -53,25 +48,24 @@ window.Shop = {
     },
 
     displayProducts: function (products) {
-        let productsHtml = "";
+        var productsHtml = "";
 
-        products.forEach(oneProduct => productsHtml += Shop.getProductHtml());
+        products.forEach(oneProduct => productsHtml += Shop.getProductHtml(oneProduct));
 
-        $(".single-product-area .row:nth-child").html(productsHtml)
+        $(".single-product-area .row:first-child").html(productsHtml);
     },
 
-    bindEvents: function (){
-        $(".single-product-area").delegate(".add_to_cart_button","click",function (event) {
-            event.preventDefault()
+    bindEvents: function () {
+        $(".single-product-area").delegate(".add_to_cart_button", "click",
+            function (event) {
+                event.preventDefault();
 
-            let productId = $(this).data("product_id");
+                let productId = $(this).data("product_id");
 
-            Shop.addProductToCart(productId);
-        })
-
+                Shop.addProductToCart(productId);
+            })
 
     }
-
 };
 
 Shop.getProducts();
